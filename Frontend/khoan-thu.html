@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<title>Khoản Thu – Quản Lý Hộ Dân</title>
+<link rel="stylesheet" href="layout.css"/>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo"><div class="hdr-icon">🏢</div><div><div class="hdr-title">Quản Lý Hộ Dân</div><div class="hdr-sub">BlueMoon – v1.0</div></div></div>
+  <div class="hdr-mid"><div class="search-wrap"><span class="search-icon">🔍</span><input placeholder="Tìm kiếm..."/></div><nav class="breadcrumb">🏠 / <b>Khoản thu</b></nav></div>
+  <div class="hdr-right"><button class="hbtn">🔔</button><div class="upill"><div class="uavatar">AD</div><div><div class="uname">Admin</div><div class="urole">Quản trị viên</div></div></div></div>
+</header>
+
+<aside>
+  <div class="nav-sec"><span class="nav-lbl">Tổng quan</span><a href="dashboard.html" class="nav-a">📊 Bảng điều khiển</a></div>
+  <div class="ndiv"></div>
+  <div class="nav-sec"><span class="nav-lbl">Quản lý dân cư</span>
+    <a href="ho-dan.html" class="nav-a">🏠 Hộ dân</a>
+    <a href="nhan-khau.html" class="nav-a">👥 Nhân khẩu</a>
+  </div>
+  <div class="ndiv"></div>
+  <div class="nav-sec"><span class="nav-lbl">Tài chính</span>
+    <a href="khoan-thu.html" class="nav-a active">💳 Khoản thu</a>
+    <a href="thu-phi.html" class="nav-a">💰 Thu phí <span class="nbadge red">5</span></a>
+    <a href="lich-su.html" class="nav-a">📜 Lịch sử giao dịch</a>
+  </div>
+  <div class="ndiv"></div>
+  <div class="nav-sec"><span class="nav-lbl">Báo cáo</span><a href="thong-ke.html" class="nav-a">📈 Thống kê</a></div>
+  <div class="sidebar-foot"><button class="logout" onclick="handleLogout()">🚪 Đăng xuất</button></div>
+</aside>
+
+<main>
+  <div class="page-head"><h1>Quản Lý Khoản Thu</h1></div>
+
+  <div class="card">
+    <div class="card-hdr">
+      <div class="card-ttl">💳 Danh sách khoản thu</div>
+      <button class="btn btn-primary" onclick="openModal()">＋ Tạo khoản thu mới</button>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Tên khoản thu</th><th>Loại</th><th>Số tiền</th><th>Tháng áp dụng</th><th>Số hộ</th><th>Thao tác</th></tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 <b>Hệ Thống Quản Lý Hộ Dân & Thu Phí</b> — Đồ án Công nghệ Phần mềm – Nhóm 13</p>
+  <div class="flinks"><span>Hướng dẫn</span><span>Hỗ trợ</span></div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-hdr"><span class="modal-ttl">Tạo khoản thu mới</span><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <form id="ktForm" novalidate>
+        <div class="form-group">
+          <label class="form-label">Tên khoản thu <span class="required">*</span></label>
+          <input type="text" id="tenKhoanThu" class="form-control" placeholder="Phí vệ sinh tháng 5/2026"/>
+          <div class="form-error" id="err-tenKhoanThu">Vui lòng nhập tên khoản thu</div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Loại <span class="required">*</span></label>
+            <select id="loai" class="form-control">
+              <option value="bat_buoc">Bắt buộc</option>
+              <option value="tu_nguyen">Tự nguyện</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tháng áp dụng <span class="required">*</span></label>
+            <input type="month" id="thangApDung" class="form-control"/>
+            <div class="form-error" id="err-thangApDung">Vui lòng chọn tháng</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Cách tính phí</label>
+            <select id="cachTinh" class="form-control">
+              <option value="co_dinh">Cố định / hộ</option>
+              <option value="dien_tich">Theo diện tích (m²)</option>
+              <option value="nhan_khau">Theo nhân khẩu</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Số tiền (VNĐ) <span class="required">*</span></label>
+            <input type="text" id="soTien" class="form-control" placeholder="50000"
+              oninput="this.value=this.value.replace(/[^0-9]/g,'')"/>
+            <div class="form-error" id="err-soTien">Vui lòng nhập số tiền</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ghi chú</label>
+          <textarea id="ghiChu" class="form-control" placeholder="Mô tả thêm về khoản thu..."></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal()">Hủy</button>
+      <button class="btn btn-primary" onclick="submitForm()">💾 Tạo khoản thu</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:5000/api';
+const token = localStorage.getItem('token');
+
+const MOCK = [
+  {id:'1',tenKhoanThu:'Phí vệ sinh T5/2026',loai:'bat_buoc',soTien:50000,thangApDung:'2026-05',soHo:248},
+  {id:'2',tenKhoanThu:'Phí an ninh T5/2026',loai:'bat_buoc',soTien:30000,thangApDung:'2026-05',soHo:248},
+  {id:'3',tenKhoanThu:'Quỹ cộng đồng T5',loai:'tu_nguyen',soTien:100000,thangApDung:'2026-05',soHo:120},
+];
+
+function renderTable(data) {
+  document.getElementById('tableBody').innerHTML = data.map((k,i) => `
+    <tr>
+      <td style="color:var(--muted)">${String(i+1).padStart(3,'0')}</td>
+      <td><b>${k.tenKhoanThu}</b></td>
+      <td><span class="badge ${k.loai==='bat_buoc'?'badge-danger':'badge-success'}">${k.loai==='bat_buoc'?'Bắt buộc':'Tự nguyện'}</span></td>
+      <td><b>${k.soTien.toLocaleString('vi-VN')}đ</b></td>
+      <td>${k.thangApDung}</td>
+      <td>${k.soHo} hộ</td>
+      <td style="display:flex;gap:4px">
+        <button class="abtn">✏️</button>
+        <button class="abtn danger">🗑</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function loadData() {
+  try {
+    const res = await fetch(`${API}/khoan-thu`, { headers: {'Authorization':`Bearer ${token}`} });
+    renderTable(await res.json());
+  } catch { renderTable(MOCK); }
+}
+
+function openModal() { document.getElementById('modalOverlay').classList.add('show'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); document.getElementById('ktForm').reset(); }
+
+function validate() {
+  let ok = true;
+  ['tenKhoanThu','thangApDung','soTien'].forEach(id => {
+    const el = document.getElementById(id);
+    const err = document.getElementById('err-'+id);
+    const valid = el.value.trim().length > 0;
+    el.classList.toggle('error', !valid);
+    if(err) err.classList.toggle('show-error', !valid);
+    if(!valid) ok = false;
+  });
+  return ok;
+}
+
+async function submitForm() {
+  if (!validate()) return;
+  const body = {
+    tenKhoanThu: document.getElementById('tenKhoanThu').value.trim(),
+    loai: document.getElementById('loai').value,
+    cachTinh: document.getElementById('cachTinh').value,
+    soTien: +document.getElementById('soTien').value,
+    thangApDung: document.getElementById('thangApDung').value,
+    ghiChu: document.getElementById('ghiChu').value
+  };
+  try {
+    const res = await fetch(`${API}/khoan-thu`, {
+      method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},
+      body: JSON.stringify(body)
+    });
+    if(res.ok){ closeModal(); loadData(); alert('Tạo khoản thu thành công!'); }
+    else alert('Có lỗi xảy ra!');
+  } catch { alert('Không thể kết nối server!'); }
+}
+
+function handleLogout() { if(confirm('Đăng xuất?')){ localStorage.removeItem('token'); window.location.href='login.html'; } }
+loadData();
+</script>
+</body>
+</html>
