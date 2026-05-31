@@ -138,6 +138,7 @@ CREATE INDEX idx_dong_gop_ho_gia_dinh ON dong_gop_tu_nguyen(ho_gia_dinh_id);
 
 -- Insert Tài khoản Quản trị ban đầu
 INSERT INTO nguoi_dung (ten_dang_nhap, mat_khau, vai_tro) VALUES
+('admin', '123456', 'TO_TRUONG'), -- Tài khoản dùng để test Frontend
 ('totruong', 'hashed_pwd_123', 'TO_TRUONG'),
 ('ketoan', 'hashed_pwd_456', 'KE_TOAN');
 
