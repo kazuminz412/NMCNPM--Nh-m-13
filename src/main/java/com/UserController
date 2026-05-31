@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/users")
@@ -23,9 +25,18 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
         User user = userService.checkLogin(loginRequest.getUsername(), loginRequest.getPassword());
         if (user != null) {
-            return ResponseEntity.ok(user); // Trả về 200 OK kèm đối tượng User
+            // Đóng gói dữ liệu thành chuẩn { "token": "...", "user": {...} }
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", "fake-jwt-token-cho-sprint1"); // Sprint 1 tạm dùng token giả
+            response.put("user", user);
+            
+            return ResponseEntity.ok(response); 
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai tên đăng nhập hoặc mật khẩu");
+        
+        // Frontend cũng đang chờ chữ "message" khi báo lỗi
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", "Sai tên đăng nhập hoặc mật khẩu!");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
     // danh sách người dùng
