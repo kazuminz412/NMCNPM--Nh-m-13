@@ -41,6 +41,12 @@ public class UserService {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng với ID: " + id));
         
+        // BỔ SUNG: Kiểm tra xem user có đổi tên không? Nếu có đổi thì tên mới đã tồn tại chưa?
+        if (!user.getUsername().equals(userDetails.getUsername()) && 
+            userRepository.existsByUsername(userDetails.getUsername())) {
+            throw new RuntimeException("Tên đăng nhập mới đã có người sử dụng!");
+        }
+        
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
         
