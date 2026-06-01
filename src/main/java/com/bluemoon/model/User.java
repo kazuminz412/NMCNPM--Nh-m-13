@@ -13,7 +13,9 @@ import lombok.*;
 public class User extends BaseEntity { 
     @Column(name = "ten_dang_nhap", nullable = false, unique = true, length = 50)
     private String username;
-
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+    
     @JsonIgnore 
     @Column(name = "mat_khau", nullable = false)
     private String password;
