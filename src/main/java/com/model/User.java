@@ -10,12 +10,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity { // Đổi thành BaseEntity cho khớp với file bạn ấy đã tạo
-
+public class User extends BaseEntity { 
     @Column(name = "ten_dang_nhap", nullable = false, unique = true, length = 50)
     private String username;
 
-    @JsonIgnore // Chỉ khai báo 1 lần password ở đây
+    @JsonIgnore 
     @Column(name = "mat_khau", nullable = false)
     private String password;
 
