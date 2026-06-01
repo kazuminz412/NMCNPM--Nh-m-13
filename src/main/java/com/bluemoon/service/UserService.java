@@ -4,7 +4,6 @@ import com.bluemoon.model.User;
 import com.bluemoon.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation;
 
 import java.util.List;
 import java.util.Optional;

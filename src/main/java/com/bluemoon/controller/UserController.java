@@ -48,9 +48,13 @@ public class UserController {
     // thông tin theo ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        return userService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("User không tồn tại"));
+        Optional<User> userOptional = userService.findById(id);
+
+        if (userOptional.isPresent()) {
+            return ResponseEntity.ok().body(userOptional.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User không tồn tại");
+        }
     }
 
     // Thêm mới
