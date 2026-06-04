@@ -25,4 +25,7 @@ public class User extends BaseEntity {
 
     @Column(name = "nhan_khau_id", unique = true)
     private Integer nhanKhauId; 
+
+    Optional<User> findByUsername(String username);
+    boolean existsByUsername(String username);
 }
