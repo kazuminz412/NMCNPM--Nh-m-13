@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
     
-    // Hàm của bạn Backend viết - Dùng để mã hóa mật khẩu (Chuẩn)
+    // Hàm để mã hóa mật khẩu (Chuẩn)
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
