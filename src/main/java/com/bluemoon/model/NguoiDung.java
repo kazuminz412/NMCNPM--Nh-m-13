@@ -1,18 +1,17 @@
 package com.bluemoon.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore; // Import để dùng JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "nguoi_dung")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class User extends BaseEntity { 
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+public class NguoiDung extends BaseEntity { 
     @Column(name = "ten_dang_nhap", nullable = false, unique = true, length = 50)
     private String username;
+    
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     
@@ -25,7 +24,4 @@ public class User extends BaseEntity {
 
     @Column(name = "nhan_khau_id", unique = true)
     private Integer nhanKhauId; 
-
-    Optional<User> findByUsername(String username);
-    boolean existsByUsername(String username);
 }
