@@ -6,11 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    
-    // Tìm kiếm user theo username
-    Optional<User> findByUsername(String username);
-    
-    // Kiểm tra username đã tồn tại chưa
+public interface NguoiDungRepository extends JpaRepository<NguoiDung, Long> {
+    Optional<NguoiDung> findByUsername(String username);
     boolean existsByUsername(String username);
 }
