@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Getter @Setter
-public class HoGiaDinh extends BaseEntity {
+public class HoDan extends BaseEntity {
     
     private String maHoKhau;      
     private String soPhong;
