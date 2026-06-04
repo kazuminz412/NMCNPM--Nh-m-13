@@ -31,13 +31,18 @@ public class AuthController {
     }
 
     // 2. ĐĂNG KÝ
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody com.bluemoon.model.NguoiDung nguoiDung) {
-        try {
-            authService.register(nguoiDung);
-            return ResponseEntity.ok(Map.of("message", "Đăng ký thành công!"));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
-        }
+    @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    try {
+        String token = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
+        
+        // Trả về Token kèm thông tin cần thiết
+        return ResponseEntity.ok(Map.of("token", token));
+        
+    } catch (RuntimeException e) {
+        // Trả về 401 Unauthorized kèm thông báo lỗi
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(Map.of("message", e.getMessage()));
     }
+}
 }
