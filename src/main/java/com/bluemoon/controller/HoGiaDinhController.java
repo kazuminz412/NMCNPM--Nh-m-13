@@ -7,14 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*") // MỞ CỬA CHO FRONTEND GỌI API (CHỐNG LỖI CORS)
 @RestController
-@RequestMapping("/api/hogiadinh")
+@RequestMapping("/api/ho-dan") 
 @RequiredArgsConstructor
 public class HoGiaDinhController {
+    
     private final HoGiaDinhService service;
 
     @GetMapping
-    public ResponseEntity<?> getAll() { return ResponseEntity.ok(service.getAll()); }
+    public ResponseEntity<?> getAll() { 
+        return ResponseEntity.ok(service.getAll()); 
+    }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody HoGiaDinh ho) {
