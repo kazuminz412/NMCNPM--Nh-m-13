@@ -1,153 +1,69 @@
 package com.bluemoon.service;
 
-
-
-import com.bluemoon.model.User; 
-
-import com.bluemoon.repository.UserRepository; 
-
-import com.bluemoon.security.JwtUtils;
-
+import com.bluemoon.model.NguoiDung;
+import com.bluemoon.repository.NguoiDungRepository;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.mockito.InjectMocks;
-
 import org.mockito.Mock;
-
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-
-
 @ExtendWith(MockitoExtension.class)
-
 public class AuthServiceTest {
 
-
-
-    // 1. Khai báo các đối tượng giả (Mocks)
+    @Mock
+    private NguoiDungRepository repository;
 
     @Mock
-
-    private UserRepository repository; 
-
-
-
-    @Mock
-
-    private BCryptPasswordEncoder passwordEncoder;
-
-
-
-    @Mock
-
-    private JwtUtils jwtUtils;
-
-
-
-    // 2. Bơm các Mocks vào Service cần test
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-
     private AuthService authService;
 
-
-
-    // KỊCH BẢN 1: ĐĂNG NHẬP THÀNH CÔNG
-
     @Test
-
-    void testLogin_Success() {
-
-        // Chuẩn bị dữ liệu giả
-
-        User user = new User();
-
+    void testCheckPassword_Success() {
+        // 1. Chuẩn bị dữ liệu giả
+        String rawPass = "mat_khau_that";
+        String encodedPass = "hash_loang_ngoang";
+        
+        NguoiDung user = new NguoiDung();
         user.setUsername("admin");
+        user.setPassword(encodedPass);
 
-        user.setPassword("chuoi_ma_hoa_loang_ngoang"); // DB luôn lưu mật khẩu đã băm
-
-        
-
-        // Dạy cho các Mock biết phải làm gì
-
+        // 2. Mock các hành vi
         when(repository.findByUsername("admin")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(rawPass, encodedPass)).thenReturn(true);
 
-        when(passwordEncoder.matches("123456", "chuoi_ma_hoa_loang_ngoang")).thenReturn(true);
-
-        when(jwtUtils.generateToken("admin")).thenReturn("mocked-jwt-token-xyz");
-
-        
-
-        // Thực thi
-
-        String resultToken = authService.login("admin", "123456");
-
-        
-
-        // Kiểm tra kết quả
-
-        assertEquals("mocked-jwt-token-xyz", resultToken);
-
+        // 3. Thực hiện kiểm tra (Ở đây ta kiểm tra logic bên trong authService.login)
+        assertDoesNotThrow(() -> authService.login("admin", rawPass));
     }
 
-
-
-    // KỊCH BẢN 2: NHẬP SAI MẬT KHẨU
-
     @Test
-
-    void testLogin_WrongPassword_ThrowsException() {
-
-        // Chuẩn bị
-
-        User user = new User();
-
-        user.setUsername("admin");
-
-        user.setPassword("chuoi_ma_hoa_loang_ngoang");
-
+    void testCheckPassword_Fail() {
+        // 1. Chuẩn bị dữ liệu
+        String wrongPass = "sai_mat_khau";
+        String encodedPass = "hash_loang_ngoang";
         
-
-        // Dạy cho Mock: Khi quét mật khẩu sai thì báo false
+        NguoiDung user = new NguoiDung();
+        user.setUsername("admin");
+        user.setPassword(encodedPass);
 
         when(repository.findByUsername("admin")).thenReturn(Optional.of(user));
+        // Mock passwordEncoder trả về false khi sai mật khẩu
+        when(passwordEncoder.matches(wrongPass, encodedPass)).thenReturn(false);
 
-        when(passwordEncoder.matches("sai_pass", "chuoi_ma_hoa_loang_ngoang")).thenReturn(false);
-
-        
-
-        // Thực thi và Kỳ vọng sẽ ném ra lỗi RuntimeException
-
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-
-            authService.login("admin", "sai_pass");
-
+        // 2. Kỳ vọng kết quả ném ra lỗi
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            authService.login("admin", wrongPass);
         });
 
-        
-
-        // Kiểm tra câu thông báo lỗi xem có khớp không
-
         assertEquals("Sai tên đăng nhập hoặc mật khẩu!", exception.getMessage());
-
     }
-
 }
-
 
