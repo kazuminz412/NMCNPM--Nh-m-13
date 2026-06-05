@@ -1,8 +1,0 @@
-com\bluemoon\BackendApplication.class
-com\bluemoon\model\HoGiaDinh.class
-com\bluemoon\controller\UserController.class
-com\bluemoon\model\BaseEntity.class
-com\bluemoon\model\PhuongTien.class
-com\bluemoon\model\User.class
-com\bluemoon\repository\UserRepository.class
-com\bluemoon\service\UserService.class

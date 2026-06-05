@@ -13,8 +13,7 @@ import lombok.*;
 public class User extends BaseEntity { 
     @Column(name = "ten_dang_nhap", nullable = false, unique = true, length = 50)
     private String username;
-    
-    @Column(name = "email", unique = true)  // ✅ BỎ nullable = false
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
     
     @JsonIgnore 
