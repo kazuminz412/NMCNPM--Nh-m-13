@@ -1,8 +1,8 @@
 package com.bluemoon.service;
 
-import com.bluemoon.model.HoGiaDinh;
+import com.bluemoon.model.HoDan;
 import com.bluemoon.model.NhanKhau;
-import com.bluemoon.repository.HoGiaDinhRepository;
+import com.bluemoon.repository.HoDanRepository;
 import com.bluemoon.repository.NhanKhauRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 public class NhanKhauService {
     
     private final NhanKhauRepository nhanKhauRepository;
-    private final HoGiaDinhRepository hoGiaDinhRepository; 
+    private final HoDanRepository hoDanRepository; 
 
     public List<NhanKhau> findAll() {
         return nhanKhauRepository.findAll();
@@ -29,9 +29,9 @@ public class NhanKhauService {
         }
 
         if (nhanKhau.getHoDanId() != null) {
-            HoGiaDinh hoGiaDinh = hoGiaDinhRepository.findById(nhanKhau.getHoDanId())
+            HoDan hoDan = hoDanRepository.findById(nhanKhau.getHoDanId())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy Hộ gia đình để thêm vào!"));
-            nhanKhau.setHoGiaDinh(hoGiaDinh);
+            nhanKhau.setHoDanh(hoDanh);
         } else {
             throw new RuntimeException("Phải chọn Hộ gia đình cho nhân khẩu này!");
         }
