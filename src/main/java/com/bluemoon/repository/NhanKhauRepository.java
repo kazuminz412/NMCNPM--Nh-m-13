@@ -12,5 +12,5 @@ public interface NhanKhauRepository extends JpaRepository<NhanKhau, Long> {
     boolean existsBySoCCCD(String soCCCD);
     
     // Tìm nhân khẩu theo ID hộ gia đình
-    List<NhanKhau> findByHoGiaDinhId(Long hoGiaDinhId);
+    List<NhanKhau> findByHoDanId(Long hoDanId);
 }
