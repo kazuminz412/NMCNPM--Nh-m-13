@@ -75,18 +75,18 @@ CREATE TABLE hoa_don (
 );
 
 -- 7. BẢNG CHI TIẾT HÓA ĐƠN (Xử lý quan hệ n-n giữa Hóa đơn và Khoản phí)
+
 CREATE TABLE chi_tiet_hoa_don (
     hoa_don_id INT NOT NULL,
     khoan_phi_id INT NOT NULL,
     chi_so_cu INT DEFAULT NULL, 
     chi_so_moi INT DEFAULT NULL,
-    so_luong INT NOT NULL DEFAULT 1 CHECK (so_luong > 0), -- Số lượng phải lớn hơn 0
-    thanh_tien DECIMAL(12,2) NOT NULL CHECK (thanh_tien >= 0), -- Thành tiền không được âm
+    so_luong DECIMAL(8,2) NOT NULL DEFAULT 1 CHECK (so_luong > 0), 
+    thanh_tien DECIMAL(12,2) NOT NULL CHECK (thanh_tien >= 0),
     PRIMARY KEY (hoa_don_id, khoan_phi_id),
     FOREIGN KEY (hoa_don_id) REFERENCES hoa_don(id) ON DELETE CASCADE,
     FOREIGN KEY (khoan_phi_id) REFERENCES khoan_phi(id)
 );
-
 -- 8. BẢNG GIAO DỊCH (Lịch sử thanh toán và tích hợp QR Code)
 CREATE TABLE giao_dich (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -216,6 +216,7 @@ DELIMITER ;
 
 -- 1. Khởi tạo Tài khoản hệ thống ban đầu
 INSERT INTO nguoi_dung (ten_dang_nhap, mat_khau, vai_tro) VALUES
+('admin', '123456', 'TO_TRUONG'), -- Tài khoản dùng để test Frontend
 ('totruong', 'hashed_pwd_123', 'TO_TRUONG'),
 ('ketoan', 'hashed_pwd_456', 'KE_TOAN');
 
@@ -293,14 +294,14 @@ INSERT INTO hoa_don (ho_gia_dinh_id, thang_nam, tong_tien, trang_thai_thanh_toan
 
 -- 7. Khởi tạo Chi tiết hóa đơn (Khi chạy lệnh này, tổng tiền trong bảng hoa_don sẽ tự động nảy số nhờ Trigger)
 INSERT INTO chi_tiet_hoa_don (hoa_don_id, khoan_phi_id, so_luong, thanh_tien) VALUES
-(1, 1, 65, 458500.00), (1, 2, 2, 200000.00), (1, 3, 1, 50000.00), -- Hộ 1 có 2 xe máy
-(2, 1, 70, 490000.00), (2, 2, 1, 100000.00), (2, 3, 1, 50000.00),
-(3, 1, 55, 385000.00), (3, 2, 1, 100000.00), (3, 3, 1, 50000.00),
-(4, 1, 85, 598500.00), (4, 2, 1, 100000.00), (4, 3, 1, 50000.00),
-(5, 1, 65, 458500.00), (5, 2, 1, 100000.00), (5, 3, 1, 50000.00),
-(11, 1, 100, 700000.00), (11, 2, 1, 100000.00), (11, 3, 1, 50000.00),
-(12, 1, 75, 528500.00), (12, 2, 1, 100000.00), (12, 3, 1, 50000.00),
-(13, 1, 65, 455000.00), (13, 2, 1, 100000.00), (13, 3, 1, 50000.00);
+(1, 1, 65.5, 458500.00), (1, 2, 2, 200000.00), (1, 3, 1, 50000.00), -- Hộ 1 có 2 xe máy
+(2, 1, 70.00, 490000.00), (2, 2, 1, 100000.00), (2, 3, 1, 50000.00),
+(3, 1, 55.00, 385000.00), (3, 2, 1, 100000.00), (3, 3, 1, 50000.00),
+(4, 1, 85.00, 598500.00), (4, 2, 1, 100000.00), (4, 3, 1, 50000.00),
+(5, 1, 65.00, 458500.00), (5, 2, 1, 100000.00), (5, 3, 1, 50000.00),
+(11, 1, 100.00, 700000.00), (11, 2, 1, 100000.00), (11, 3, 1, 50000.00),
+(12, 1, 75.00, 528500.00), (12, 2, 1, 100000.00), (12, 3, 1, 50000.00),
+(13, 1, 65.00, 455000.00), (13, 2, 1, 100000.00), (13, 3, 1, 50000.00);
 
 -- 8. Khởi tạo Giao dịch thanh toán thành công cho 5 hộ đầu tiên
 INSERT INTO giao_dich (hoa_don_id, so_tien_thanh_toan, phuong_thuc_thanh_toan, ma_giao_dich_ngan_hang) VALUES
