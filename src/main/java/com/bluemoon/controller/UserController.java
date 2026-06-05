@@ -23,6 +23,7 @@ public class UserController {
     //  Đăng nhập
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
+
         User user = userService.checkLogin(loginRequest.getUsername(), loginRequest.getPassword());
         if (user != null) {
             // Đóng gói dữ liệu thành chuẩn { "token": "...", "user": {...} }
