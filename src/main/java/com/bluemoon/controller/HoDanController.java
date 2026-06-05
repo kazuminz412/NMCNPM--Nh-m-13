@@ -1,7 +1,7 @@
 package com.bluemoon.controller;
 
-import com.bluemoon.model.HoGiaDinh;
-import com.bluemoon.service.HoGiaDinhService;
+import com.bluemoon.model.HoDan;
+import com.bluemoon.service.HoDanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/ho-dan") 
 @RequiredArgsConstructor
-public class HoGiaDinhController {
+public class HoDanController {
     
-    private final HoGiaDinhService service;
+    private final HoDanService service;
 
     @GetMapping
     public ResponseEntity<?> getAll() { 
@@ -21,12 +21,12 @@ public class HoGiaDinhController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody HoGiaDinh ho) {
+    public ResponseEntity<?> create(@Valid @RequestBody HoDan ho) {
         return ResponseEntity.ok(service.create(ho));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody HoGiaDinh ho) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody HoDan ho) {
         return ResponseEntity.ok(service.update(id, ho));
     }
 
