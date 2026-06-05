@@ -30,7 +30,7 @@ public class NhanKhau extends BaseEntity {
     private String ghiChu;
     @ManyToOne
     @JoinColumn(name = "ho_gia_dinh_id")
-    private HoGiaDinh hoGiaDinh;
+    private HoDan hoDan;
 
     @Transient 
     private Long hoDanId;
