@@ -17,7 +17,7 @@ public class UserService {
     public User checkLogin(String username, String password) {
         return userRepository.findByUsername(username)
                 .filter(user -> user.getPassword().equals(password))
-                .orElse(null); // Trả về null nếu không tìm thấy hoặc sai mật khẩu
+                .orElse(null);
     }
 
     // 2. HÀM CRUD (QUẢN LÝ NGƯỜI DÙNG)
