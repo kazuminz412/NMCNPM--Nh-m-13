@@ -295,23 +295,23 @@
       // ===== VALIDATION =====
       function validate() {
         let ok = true;
-        const username = document.getElementById('username');
-        const password = document.getElementById('password');
+        const username = document.getElementById("username");
+        const password = document.getElementById("password");
 
         // Reset
-        username.classList.remove('error');
-        password.classList.remove('error');
-        document.getElementById('err-username').classList.remove('show-error');
-        document.getElementById('err-password').classList.remove('show-error');
+        username.classList.remove("error");
+        password.classList.remove("error");
+        document.getElementById("err-username").classList.remove("show-error");
+        document.getElementById("err-password").classList.remove("show-error");
 
         if (!username.value.trim()) {
-          username.classList.add('error');
-          document.getElementById('err-username').classList.add('show-error');
+          username.classList.add("error");
+          document.getElementById("err-username").classList.add("show-error");
           ok = false;
         }
         if (!password.value.trim()) {
-          password.classList.add('error');
-          document.getElementById('err-password').classList.add('show-error');
+          password.classList.add("error");
+          document.getElementById("err-password").classList.add("show-error");
           ok = false;
         }
         return ok;
@@ -319,48 +319,55 @@
 
       // ===== TOGGLE PASSWORD =====
       function togglePass() {
-        const p = document.getElementById('password');
-        p.type = p.type === 'password' ? 'text' : 'password';
+        const p = document.getElementById("password");
+        p.type = p.type === "password" ? "text" : "password";
       }
 
       // ===== SUBMIT & GỌI API =====
-      document.getElementById('loginForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        if (!validate()) return;
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          if (!validate()) return;
 
-        const btn = document.getElementById('btnLogin');
-        const btnText = document.getElementById('btnText');
-        btn.disabled = true;
-        btnText.innerHTML = '<div class="spinner"></div> Đang đăng nhập...';
-        document.getElementById('alertError').style.display = 'none';
+          const btn = document.getElementById("btnLogin");
+          const btnText = document.getElementById("btnText");
+          btn.disabled = true;
+          btnText.innerHTML = '<div class="spinner"></div> Đang đăng nhập...';
+          document.getElementById("alertError").style.display = "none";
 
-        try {
-          const res = await fetch('http://localhost:8080/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              username: document.getElementById('username').value.trim(),
-              password: document.getElementById('password').value
-            })
-          });
+          try {
+            const res = await fetch("http://localhost:8080/api/users/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              // Chỉ cần 1 dòng chữ body và dùng tiếng Anh:
+              body: JSON.stringify({
+                username: document.getElementById("username").value.trim(),
+                password: document.getElementById("password").value,
+              }),
+            });
 
-          const data = await res.json();
-          if (res.ok && data.token) {
-            // TODO: Đồ án lưu localStorage cho tiện demo. Lên Production cần dùng httpOnly Cookie để chống XSS.
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            window.location.href = 'dashboard.html';
-          } else { // BỎ CÁI DẤU } BỊ THỪA Ở ĐÂY ĐI
-            document.getElementById('alertMsg').textContent = data.message || 'Tên đăng nhập hoặc mật khẩu không đúng!';
-            document.getElementById('alertError').style.display = 'flex';
-          }catch (err) {
-          document.getElementById('alertMsg').textContent = 'Không thể kết nối đến server. Vui lòng thử lại!';
-          document.getElementById('alertError').style.display = 'flex';
-        } finally {
-          btn.disabled = false;
-          btnText.textContent = 'Đăng nhập';
-        }
-      });
+            const data = await res.json();
+            if (res.ok && data.token) {
+              // TODO: Đồ án lưu localStorage cho tiện demo. Lên Production cần dùng httpOnly Cookie để chống XSS.
+              localStorage.setItem("token", data.token);
+              localStorage.setItem("user", JSON.stringify(data.user));
+              window.location.href = "ho-dan.html";
+            } else {
+              // BỎ CÁI DẤU } BỊ THỪA Ở ĐÂY ĐI
+              document.getElementById("alertMsg").textContent =
+                data.message || "Tên đăng nhập hoặc mật khẩu không đúng!";
+              document.getElementById("alertError").style.display = "flex";
+            }
+          } catch (err) {
+            document.getElementById("alertMsg").textContent =
+              "Không thể kết nối đến server. Vui lòng thử lại!";
+            document.getElementById("alertError").style.display = "flex";
+          } finally {
+            btn.disabled = false;
+            btnText.textContent = "Đăng nhập";
+          }
+        });
     </script>
   </body>
 </html>
