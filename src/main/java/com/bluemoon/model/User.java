@@ -3,7 +3,7 @@ package com.bluemoon.model;
 import com.fasterxml.jackson.annotation.JsonIgnore; // Import để dùng JsonIgnore
 import jakarta.persistence.*;
 import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "nguoi_dung")
 @Getter
@@ -15,8 +15,8 @@ public class User extends BaseEntity {
     private String username;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-    
-    @JsonIgnore 
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "mat_khau", nullable = false)
     private String password;
 
