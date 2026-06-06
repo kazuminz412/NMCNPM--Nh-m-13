@@ -40,7 +40,6 @@ public class HoDanService {
         existing.setToaNha(data.getToaNha());
         existing.setDienTichM2(data.getDienTichM2());
         existing.setNgayCapHoKhau(data.getNgayCapHoKhau());
-        existing.setSoDienThoai(data.getSoDienThoai());
 
         return repo.save(existing);
     }
