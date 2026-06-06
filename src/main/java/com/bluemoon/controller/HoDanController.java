@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "*") // MỞ CỬA CHO FRONTEND GỌI API (CHỐNG LỖI CORS)
 @RestController
 @RequestMapping("/api/ho-dan") 
 @RequiredArgsConstructor
