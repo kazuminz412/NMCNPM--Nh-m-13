@@ -337,7 +337,7 @@
           document.getElementById("alertError").style.display = "none";
 
           try {
-            const res = await fetch("http://localhost:8080/api/users/login", {
+            const res = await fetch("http://localhost:8080/api/auth/login", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               // Chỉ cần 1 dòng chữ body và dùng tiếng Anh:
