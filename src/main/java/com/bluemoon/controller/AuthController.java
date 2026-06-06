@@ -25,24 +25,17 @@ public class AuthController {
             // Trả về token cho frontend lưu vào localStorage
             return ResponseEntity.ok(Map.of("token", token));
         } catch (RuntimeException e) {
-            // Trả về lỗi 401 nếu sai pass hoặc user
+            // Trả về lỗi 401 nếu sai pass hoặc user (Frontend bắt biến message để in ra màn hình)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", e.getMessage()));
         }
     }
 
-    // 2. ĐĂNG KÝ
-    @PostMapping("/login")
-public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-    try {
-        String token = authService.login(loginRequest.getUsername(), loginRequest.getPassword());
-        
-        // Trả về Token kèm thông tin cần thiết
-        return ResponseEntity.ok(Map.of("token", token));
-        
-    } catch (RuntimeException e) {
-        // Trả về 401 Unauthorized kèm thông báo lỗi
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                             .body(Map.of("message", e.getMessage()));
+    // 2. ĐĂNG KÝ (Nếu làm tính năng tự đăng ký thì viết vào đây)
+    /*
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        // Logic gọi sang AuthService để tạo tài khoản
+        // ...
     }
-}
+    */
 }
