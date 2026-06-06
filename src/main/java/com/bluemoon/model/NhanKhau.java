@@ -1,5 +1,6 @@
 package com.bluemoon.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,17 +9,21 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "nhan_khau")
 @Getter @Setter
-public class NhanKhau extends BaseEntity {
+public class NhanKhau extends BaseEntity { 
     
+    @Column(name = "ho_ten", nullable = false)
     private String hoTen;
     
-    @Column(name = "cccd")
+    @Column(name = "cccd", unique = true)
     private String soCCCD;
     
+    @Column(name = "ngay_sinh", nullable = false)
     private LocalDate ngaySinh;
     
+    @Column(name = "gioi_tinh", nullable = false)
     private String gioiTinh;
 
+    @Column(name = "so_dien_thoai")
     private String soDienThoai;
     
     @Column(name = "quan_he_chu_ho")
@@ -27,11 +32,22 @@ public class NhanKhau extends BaseEntity {
     @Column(name = "trang_thai_cu_tru")
     private String trangThai; 
     
-    private String ghiChu;
-    @ManyToOne
-    @JoinColumn(name = "ho_gia_dinh_id")
-    private HoDan hoDan;
+    // Đã thêm 2 trường bị thiếu so với DB
+    @Column(name = "ngay_chuyen_den")
+    private LocalDate ngayChuyenDen;
 
-    @Transient 
+    @Column(name = "ngay_chuyen_di")
+    private LocalDate ngayChuyenDi;
+    
+    // Đã XÓA trường ghiChu vì DB không có
+
+    // SỬA LỖI 3: Map hoDanId để Frontend dễ lấy dữ liệu (không dùng Transient)
+    @Column(name = "ho_gia_dinh_id", insertable = false, updatable = false)
     private Long hoDanId;
+
+    // SỬA LỖI 1: Chặn đứng vòng lặp vô hạn JSON
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ho_gia_dinh_id")
+    @JsonIgnore 
+    private HoDan hoDan;
 }
