@@ -1,5 +1,6 @@
 package com.bluemoon.controller;
 
+import com.bluemoon.dto.LoginRequest;
 import com.bluemoon.model.NguoiDung;
 import com.bluemoon.service.NguoiDungService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class NguoiDungController {
     // 0. API ĐĂNG NHẬP (Đã được phục hồi)
     // ============================================
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody NguoiDung loginRequest) {
-        NguoiDung user = nguoiDungService.checkLogin(loginRequest.getUsername(), loginRequest.getPassword());
+   public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    NguoiDung user = nguoiDungService.checkLogin(request.getUsername(), request.getPassword());
         if (user != null) {
             Map<String, Object> response = new HashMap<>();
             response.put("token", "fake-jwt-token-cho-sprint1"); 
