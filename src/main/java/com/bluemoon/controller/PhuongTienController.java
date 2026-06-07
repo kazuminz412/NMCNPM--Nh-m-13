@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/phuong-tien")
-@CrossOrigin(origins = "*") // Mở kết nối cho tất cả các nguồn
 public class PhuongTienController {
 
     @Autowired
