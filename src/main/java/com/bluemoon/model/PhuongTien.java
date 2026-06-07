@@ -19,7 +19,7 @@ public class PhuongTien {
     // Lưu hoDanId để truy vấn nhanh (không cần join bảng)
     @Column(name = "ho_dan_id", insertable = false, updatable = false)
     private Long hoDanId;
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ho_dan_id", nullable = false)
     private HoDan hoDan;
