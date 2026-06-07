@@ -6,6 +6,7 @@ import com.bluemoon.repository.PhuongTienRepository;
 import com.bluemoon.repository.HoDanRepository; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // Thêm thư viện này
 
 @Service
 public class PhuongTienService {
@@ -16,15 +17,18 @@ public class PhuongTienService {
     @Autowired
     private HoDanRepository hoDanRepository;
 
-    public PhuongTien dangKyXe(PhuongTien p, Long hoDanId) throws Exception {
+    // Thêm Transactional và đổi Exception thành RuntimeException
+    @Transactional 
+    public PhuongTien dangKyXe(PhuongTien p, Long hoDanId) {
+        
         // Kiểm tra biển số trùng
         if (phuongTienRepository.existsByBienSo(p.getBienSo())) {
-            throw new Exception("Biển số xe " + p.getBienSo() + " đã được đăng ký!");
+            throw new IllegalArgumentException("Biển số xe " + p.getBienSo() + " đã được đăng ký!");
         }
 
         // Tìm HoDan thực tế từ ID
         HoDan hoDan = hoDanRepository.findById(hoDanId)
-            .orElseThrow(() -> new Exception("Không tìm thấy hộ dân với ID: " + hoDanId));
+            .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy hộ dân với ID: " + hoDanId));
 
         // Map HoDan vào đối tượng PhuongTien
         p.setHoDan(hoDan); 
