@@ -15,6 +15,11 @@ public class PhuongTien {
 
     private String loaiXe; // Ô tô, Xe máy...
     private String mauXe;
+    @Column(name = "hang_xe")
+    private String hangXe;
+
+    @Column(name = "ghi_chu", columnDefinition = "TEXT")
+    private String ghiChu;
 
     // Lưu hoDanId để truy vấn nhanh (không cần join bảng)
     @Column(name = "ho_dan_id", insertable = false, updatable = false)
