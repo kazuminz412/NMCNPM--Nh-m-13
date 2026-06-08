@@ -355,11 +355,12 @@ async function submitForm() {
     ghiChu:  document.getElementById('ghiChu').value.trim(),
   };
   try {
-    const res = await fetch(id ? `${API}/phuong-tien/${id}` : `${API}/phuong-tien`, {
-      method: id ? 'PUT' : 'POST',
-      headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${token}` },
-      body: JSON.stringify(body)
-    });
+    // Dùng API có chứa hoDanId trên URL khi Thêm mới
+  const res = await fetch(id ? `${API}/phuong-tien/${id}` : `${API}/phuong-tien/dang-ky/${body.hoDanId}`, {
+  method: id ? 'PUT' : 'POST',
+  headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${token}` },
+  body: JSON.stringify(body)
+});
     if (!res.ok) throw new Error('API Error');
     closeModal();
     loadData();
