@@ -5,23 +5,23 @@ import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
-@Table(name = "khoan_thu")
+@Table(name = "danh_muc_phi") 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class KhoanThu extends BaseEntity {
+public class DanhMucPhi extends BaseEntity {
 
-    @Column(name = "ten_khoan_thu", nullable = false)
-    private String tenKhoanThu; // Khớp với Frontend (hoặc đổi thành tenPhi)
+    // Đã sửa tên biến thành tenPhi để hứng đúng dữ liệu JSON từ Frontend
+    @Column(name = "ten_phi", nullable = false)
+    private String tenPhi; 
 
     @Column(name = "loai_phi", nullable = false)
     private String loaiPhi; // bat_buoc / tu_nguyen
 
-    // Sửa Double thành Long để tránh sai số tiền tệ
+    // Đơn giá dùng Long để tránh sai số tiền tệ
     @Min(value = 0, message = "Đơn giá không được phép là số âm!")
     @Column(name = "don_gia", nullable = false)
     private Long donGia; 
 
-    // Bổ sung các trường để khớp với Frontend
     @Column(name = "don_vi_tinh", nullable = false)
     private String donViTinh; // m2, xe, ho, nguoi
 
