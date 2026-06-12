@@ -16,19 +16,15 @@ public class AuthService {
     private final JwtUtils jwtUtils;
 
     // 1. LOGIN
-      public String login(String username, String password) {
-    // 1. Tìm Người dùng theo username
-    NguoiDung NguoiDung = repository.findByUsername(username)
-        .orElseThrow(() -> new RuntimeException("Sai tên đăng nhập hoặc mật khẩu!")); // Lỗi 401
+    public String login(String username, String password) {
+        NguoiDung user = repository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("Sai tên đăng nhập hoặc mật khẩu!"));
     
-    // 2. So sánh mật khẩu (password người dùng nhập vs password đã hash trong DB)
-    if (!passwordEncoder.matches(password, user.getPassword())) {
-        throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu!"); // Lỗi 401
-    }
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Sai tên đăng nhập hoặc mật khẩu!");
+        }
     
-    // 3. Nếu đúng, trả về Token
-    return jwtUtils.generateToken(user.getUsername());
-}
+        return jwtUtils.generateToken(user.getUsername(), user.getRole());
     }
 
     // 2. REGISTER
@@ -37,12 +33,14 @@ public class AuthService {
             throw new RuntimeException("Tên đăng nhập này đã có người sử dụng!");
         }
 
-        // Mã hóa mật khẩu
         nguoiDung.setPassword(passwordEncoder.encode(nguoiDung.getPassword()));
         
-        // Gán quyền mặc định
-        if (nguoiDung.getRole() == null || nguoiDung.getRole().isEmpty()) {
-            nguoiDung.setRole("CU_DAN"); 
+
+        String role = nguoiDung.getRole();
+        if (role == null || role.isEmpty()) {
+            nguoiDung.setRole("ROLE_CU_DAN"); 
+        } else if (!role.startsWith("ROLE_")) {
+            nguoiDung.setRole("ROLE_" + role.toUpperCase());
         }
 
         repository.save(nguoiDung);
